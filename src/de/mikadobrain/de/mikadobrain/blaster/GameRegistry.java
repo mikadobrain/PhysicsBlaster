@@ -9,23 +9,29 @@ import java.util.List;
  */
 public class GameRegistry implements Registerable{
 
-    private Collection<GameObject> objects;
+    private volatile Collection<GameObject> objects;
+    private Queue<GameObject> objectsQueue;
 
     public GameRegistry() {
-        objects = new HashSet<GameObject>();
+        objects = new HashSet<>();
+        objectsQueue = new ArrayDeque<>();
     }
 
-    public List<Shape> getShapes() {
-        List<Shape> shapes = new ArrayList<Shape>();
+    public List<Drawable> getDrawables() {
+        List<Drawable> drawables = new ArrayList<Drawable>();
         for (GameObject object : objects) {
-            shapes.add(object.getComponent(Body.class).getShape());
+            Drawable drawable = object.getComponent(Body.class);
+            if (drawable != null) {
+                drawables.add(drawable);
+            }
         }
-        return shapes;
+        return drawables;
     }
 
     public void update() {
-        for(GameObject object : objects) {
 
+        for(GameObject object : objects) {
+            object.update();
         }
     }
 

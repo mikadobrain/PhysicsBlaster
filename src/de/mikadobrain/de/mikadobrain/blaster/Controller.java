@@ -1,13 +1,9 @@
 package de.mikadobrain.de.mikadobrain.blaster;
 
-import javafx.scene.shape.Circle;
-
-import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.awt.geom.Ellipse2D;
-import java.util.*;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -15,12 +11,13 @@ import java.util.List;
  */
 public class Controller extends GameComponent implements MouseListener {
 
-    private GamePanel panel;
+    private GameCanvas panel;
     private List<Point> lastClickedPoints;
 
-    public Controller(GameObject parent, GamePanel panel) {
+    public Controller(GameObject parent, GameCanvas panel) {
         super(parent);
         this.panel = panel;
+        lastClickedPoints = new ArrayList<>();
     }
 
     public void update() {

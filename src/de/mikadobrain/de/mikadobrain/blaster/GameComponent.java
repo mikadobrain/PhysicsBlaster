@@ -5,7 +5,7 @@ import java.awt.*;
 /**
  * Created by mmohr on 28.01.2016.
  */
-public abstract class GameComponent implements Parentable{
+public abstract class GameComponent implements Parentable, GameComponentInterface{
 
     private GameObject parent;
 
@@ -17,7 +17,7 @@ public abstract class GameComponent implements Parentable{
         return parent;
     }
 
-    void update() {
+    public void update() {
 
     }
 
