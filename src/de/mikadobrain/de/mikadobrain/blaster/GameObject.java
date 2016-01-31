@@ -1,7 +1,6 @@
 package de.mikadobrain.de.mikadobrain.blaster;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 /**
  * Created by mmohr on 28.01.2016.
@@ -9,12 +8,27 @@ import java.util.Set;
 public class GameObject implements Registerable, Parentable, GameComponentInterface{
 
     Set<GameComponentInterface> components;
+    Queue<GameComponentInterface> componentsQueue;
     Registerable parent;
+    boolean destroyed = false;
 
     public GameObject(Registerable parent) {
 
         this.parent = parent;
-        components = new HashSet<GameComponentInterface>();
+        components = new HashSet<>();
+        componentsQueue = new ArrayDeque<>();
+    }
+
+    public List<Drawable> getDrawables() {
+        List<Drawable> drawables = new ArrayList<>();
+        for (GameComponentInterface component : components) {
+            if(component instanceof Drawable) {
+                drawables.add((Drawable)component);
+            }else{
+                drawables.addAll(component.getDrawables());
+            }
+        }
+        return drawables;
     }
 
     public <T extends GameComponent> T getComponent(Class<T> type) {
@@ -28,11 +42,22 @@ public class GameObject implements Registerable, Parentable, GameComponentInterf
         return returnComponent;
     }
 
+    public void destroy() {
+        destroyed = true;
+    }
+
+    public boolean isDestroyed(){
+        return destroyed;
+    }
+
     public void addComponent(GameComponentInterface c) {
-        components.add(c);
+        componentsQueue.offer(c);
     }
 
     public void update() {
+        while (componentsQueue.peek() != null) {
+            components.add(componentsQueue.poll());
+        }
         for(GameComponentInterface component : components) {
             component.update();
         }

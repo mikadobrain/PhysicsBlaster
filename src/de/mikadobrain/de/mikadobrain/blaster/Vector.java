@@ -19,13 +19,21 @@ public class Vector {
         this.y = p.getY();
     }
 
-    void add(Vector v) {
-        x+=v.x;
-        y+=v.y;
+    public Vector(Vector v) {
+        this.x = v.x;
+        this.y = v.y;
+    }
+
+    Vector add(Vector v) {
+        return new Vector(x+v.x, y+v.y);
+    }
+
+    double scalarProduct() {
+        return (x*x + y*y);
     }
 
     double getLength() {
-        return Math.sqrt((x*x + y*y));
+        return Math.abs(Math.sqrt(scalarProduct()));
     }
 
     Vector normalize() {

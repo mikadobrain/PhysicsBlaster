@@ -3,33 +3,32 @@ package de.mikadobrain.de.mikadobrain.blaster;
 import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 /**
  * Created by mmohr on 28.01.2016.
  */
 public class Controller extends GameComponent implements MouseListener {
 
-    private GameCanvas panel;
-    private List<Point> lastClickedPoints;
+    private GamePanel panel;
+    private Queue<Point> lastClickedPoints;
 
-    public Controller(GameObject parent, GameCanvas panel) {
+    public Controller(GameObject parent, GamePanel panel) {
         super(parent);
         this.panel = panel;
-        lastClickedPoints = new ArrayList<>();
+        lastClickedPoints = new ArrayDeque<>();
     }
 
     public void update() {
         GameRegistry reg = getParent().getRegistry();
-
         Vector location = getParent().getComponent(Body.class).getLocation();
 
-        for(Point p : lastClickedPoints) {
+        while(lastClickedPoints.peek() != null) {
 
-            Vector shootingDirection = new Vector(p).normalize();
+            Vector shootingDirection = new Vector(lastClickedPoints.poll()).normalize();
             GameObject o = new Shot(getParent(), location, shootingDirection);
             reg.addGameObject(o);
+            getParent().addComponent(o);
         }
     }
 

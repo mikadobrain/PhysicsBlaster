@@ -6,9 +6,9 @@ package de.mikadobrain.de.mikadobrain.blaster;
 public class GameLoop implements Runnable{
 
     GameRegistry registry;
-    GameCanvas panel;
+    GamePanel panel;
 
-    public GameLoop(GameRegistry registry, GameCanvas panel) {
+    public GameLoop(GameRegistry registry, GamePanel panel) {
         this.registry = registry;
         this.panel = panel;
     }
@@ -17,13 +17,15 @@ public class GameLoop implements Runnable{
         Player player = new Player(registry, panel);
         registry.addGameObject(player);
         while(true) {
+
+            registry.update();
+            panel.doUpdate(registry);
+
             try {
                 Thread.sleep(100);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-            registry.update();
-            panel.doUpdate(registry);
         }
     }
 }

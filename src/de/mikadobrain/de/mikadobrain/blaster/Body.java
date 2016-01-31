@@ -8,14 +8,14 @@ import java.awt.*;
 /**
  * Created by mmohr on 28.01.2016.
  */
-public class Body extends GameComponent implements Drawable{
+public abstract class Body<T extends Shape> extends GameComponent implements Drawable {
 
-    private Vector impulse;
-    private Vector location;
-    private Shape shape;
-    private Color color = Color.RED;
+    protected Vector impulse;
+    protected Vector location;
+    protected T shape;
+    protected Color color = Color.RED;
 
-    public Body(GameObject parent, Vector location, Vector impulse, Shape shape) {
+    public Body(GameObject parent, Vector location, Vector impulse, T shape) {
         super(parent);
         this.location = location;
         this.impulse = impulse;
@@ -35,15 +35,13 @@ public class Body extends GameComponent implements Drawable{
     }
 
     public Vector getLocation() {
-        return location;
+        return new Vector(location);
     }
 
     @Override
-    public void update() {
-        location.add(impulse);
-    }
+    public abstract void update();
 
-    Shape getShape() {
+    T getShape() {
         return shape;
     }
 
